@@ -41,7 +41,10 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "puzzslver@puzzle-solvers"
+      "id": "puzzslver@puzzle-solvers",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   }
 }
