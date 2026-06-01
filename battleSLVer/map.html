@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bimaru Debugger Dashboard v10.0</title>
+    <style>
+        :root {
+            --bg: #f5f7fa;
+            --panel: #ffffff;
+            --text: #2d3436;
+            --accent: #0984e3;
+            --ship: #2d3436;
+            --water: #74b9ff;
+            --grid-size: 450px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .violation {
+            color: #d63031 !important;
+            font-weight: bold;
+            text-shadow: 0 0 2px rgba(214, 48, 49, 0.3);
+        }
+
+        /* Panel 1: Grid & Inventory */
+        #left-panel {
+            width: 60%;
+            padding: 10px;
+            border-right: 2px solid #dfe6e9;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        #board-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #inventory-container {
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .inventory-row {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .inventory-label {
+            width: 30px;
+            font-weight: bold;
+        }
+
+        .ship-boxes {
+            display: flex;
+            gap: 6px;
+        }
+
+        .ship-box {
+            width: 22px;
+            height: 22px;
+            border: 1.5px solid #dcdde1;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .ship-box.found {
+            background: #00b894;
+            border-color: #00b894;
+        }
+
+        /* Panel 2: Control Deck */
+        #center-panel {
+            width: 10%;
+            min-width: 160px;
+            padding: 10px;
+            border-right: 2px solid #dfe6e9;
+            background: #fff;
+            overflow-y: auto;
+        }
+
+        .control-group {
+            margin-bottom: 30px;
+        }
+
+        .btn-rule {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .btn-rule:hover {
+            filter: brightness(0.9);
+        }
+
+        .btn-basic {
+            background: #00cec9;
+            color: #fff;
+        }
+
+        .btn-r7 {
+            background: #ff7675;
+            color: #fff;
+        }
+
+        .btn-r8 {
+            background: #6c5ce7;
+            color: #fff;
+        }
+
+        .btn-reset {
+            background: #fab1a0;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .counter {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.85em;
+        }
+
+        /* Panel 3: Console */
+        #right-panel {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            padding: 5px;
+        }
+
+        #log-output {
+            flex: 1;
+            background: #fff;
+            color: #000;
+            padding: 15px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            overflow-y: auto;
+            overflow-wrap: break-word;
+        }
+
+        .log-entry {
+            margin: 3px 0;
+            border-bottom: 1px solid #f1f2f6;
+            padding-bottom: 3px;
+        }
+
+        .log-warn {
+            color: #d63031;
+        }
+
+        .log-rule {
+            color: #0984e3;
+            font-weight: bold;
+        }
+
+        .console-header {
+            background: #2d3436;
+            color: white;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Grid specific styles */
+        table {
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            border: 1px solid #dfe6e9;
+            font-size: 11px;
+        }
+
+        .idx {
+            font-size: 11px;
+            color: #636e72;
+            background: #f1f2f6;
+        }
+
+        .c-clue {
+            color: #2d3436;
+            font-weight: bold;
+        }
+
+        .r-clue-left {
+            font-weight: bold;
+            color: #2d3436;
+        }
+
+        .cell {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .bg-water {
+            background-color: var(--water);
+        }
+
+        .bg-ship {
+            background-color: #fff;
+        }
+
+        .shape {
+            position: absolute;
+            inset: 2px;
+            background: #2d3436;
+        }
+
+        .shape.sub {
+            border-radius: 50%;
+        }
+
+        .shape.top {
+            border-radius: 50% 50% 0 0;
+        }
+
+        .shape.bot {
+            border-radius: 0 0 50% 50%;
+        }
+
+        .shape.left {
+            border-radius: 50% 0 0 50%;
+        }
+
+        .shape.right {
+            border-radius: 0 50% 50% 0;
+        }
+
+        .shape.mid {
+            border-radius: 4px;
+        }
+
+        .shape.square {
+            border-radius: 4px;
+        }
+
+        .inner-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="left-panel">
+        <div id="board-container"></div>
+        <div id="inventory-container">
+            <h3>Ship Inventory</h3>
+            <div id="inventory-list"></div>
+        </div>
+    </div>
+
+    <div id="center-panel">
+        <div class="control-group">
+            <h3>Control Deck</h3>
+            <div style="margin-bottom: 15px; padding: 10px; background: #f1f2f6; border-radius: 8px;">
+                <label for="task-input" style="font-size: 11px; font-weight: bold; color: #636e72;">TASK STRING:</label>
+                <input type="text" id="task-input" style="width: 100%; padding: 6px; margin-top: 4px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 11px; font-family: monospace;" value="">
+                <button class="btn-rule" style="background: #2d3436; color: white; margin-top: 6px; padding: 8px; font-size: 12px; justify-content: center;" onclick="loadNewTask()">📥 Load Task</button>
+            </div>
+            <button class="btn-rule" style="background: #20bf6b; color: #fff;" onclick="runRule('Diagonals')">📐
+                Diagonals <span id="count-Diagonals" class="counter">0</span></button>
+            <button class="btn-rule" style="background: #e17055; color: #fff;" onclick="runRule('Caps')">🧢 Caps <span
+                    id="count-Caps" class="counter">0</span></button>
+            <button class="btn-rule" style="background: #a29bfe; color: #fff;" onclick="runRule('QuotaWater')">💧
+                Quota-Water <span id="count-QuotaWater" class="counter">0</span></button>
+            <button class="btn-rule" style="background: #fab1a0; color: #fff;" onclick="runRule('QuotaShips')">🚢
+                Quota-Ships <span id="count-QuotaShips" class="counter">0</span></button>
+            <button class="btn-rule" style="background: #00cec9; color: #fff;" onclick="runRule('ScarcityWater')">🌊
+                Scarcity-Water <span id="count-ScarcityWater" class="counter">0</span></button>
+            <button class="btn-rule" style="background: #fdcb6e; color: #fff;" onclick="runRule('ScarcityShips')">🚀
+                Scarcity-Ships <span id="count-ScarcityShips" class="counter">0</span></button>
+            <button class="btn-rule" style="background: #e84393; color: #fff;"
+                onclick="runRule('ExtendFullInventory')">📏 Extend-Ships <span id="count-ExtendFullInventory"
+                    class="counter">0</span></button>
+            <button class="btn-rule" style="background: #6c5ce7; color: #fff;" onclick="runRule('CandidateScanner')">🔍
+                Candidate Scanner <span id="count-CandidateScanner" class="counter">0</span></button>
+            <button class="btn-rule" style="background: #d63031; color: #fff;" onclick="runRule('8')">🎯 Max-Avail-Try
+                <span id="count-8" class="counter">0</span></button>
+            <hr>
+            <button class="btn-rule btn-reset" onclick="resetSolver()">🔄 Reset Board <span id="count-reset"
+                    class="counter">0</span></button>
+            <button class="btn-rule" style="background: #00b894; color: white;" onclick="solveAll()">🚀 Auto-Solve
+                v10.0</button>
+        </div>
+    </div>
+
+    <div id="right-panel">
+        <div class="console-header">SYSTEM CONSOLE <span style="cursor:pointer;" onclick="clearLogs()">[CLEAR]</span>
+        </div>
+        <div id="log-output"></div>
+    </div>
+
+    <!-- SCRIPT LOADING ORDER CRITICAL -->
+    <script src="battleSLVer.js"></script>
+    <script src="dump_script.js"></script>
+</body>
+
+</html>
