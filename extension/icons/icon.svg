@@ -1,20 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#3a6ea5"/>
-      <stop offset="100%" stop-color="#4f81bd"/>
+      <stop offset="0%" stop-color="#2c5f8a"/>
+      <stop offset="50%" stop-color="#3d7ab3"/>
+      <stop offset="100%" stop-color="#5b9bd5"/>
     </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.25)"/>
+      <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
   </defs>
-  <rect width="96" height="96" rx="14" fill="url(#bg)"/>
-  <!-- subtle puzzle grid overlay -->
-  <g stroke="#fff" stroke-width="0.8" opacity="0.15">
-    <line x1="16" y1="32" x2="80" y2="32"/>
-    <line x1="16" y1="48" x2="80" y2="48"/>
-    <line x1="16" y1="64" x2="80" y2="64"/>
-    <line x1="32" y1="16" x2="32" y2="80"/>
-    <line x1="48" y1="16" x2="48" y2="80"/>
-    <line x1="64" y1="16" x2="64" y2="80"/>
+  <!-- base rounded rect -->
+  <rect width="96" height="96" rx="18" fill="url(#bg)"/>
+  <!-- shine overlay -->
+  <rect width="96" height="48" rx="18" fill="url(#shine)"/>
+  <!-- thin accent border -->
+  <rect width="94" height="94" x="1" y="1" rx="17" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <!-- subtle grid pattern -->
+  <g stroke="rgba(255,255,255,0.08)" stroke-width="1">
+    <line x1="24" y1="20" x2="24" y2="76"/>
+    <line x1="48" y1="20" x2="48" y2="76"/>
+    <line x1="72" y1="20" x2="72" y2="76"/>
+    <line x1="20" y1="32" x2="76" y2="32"/>
+    <line x1="20" y1="48" x2="76" y2="48"/>
+    <line x1="20" y1="64" x2="76" y2="64"/>
   </g>
-  <!-- stylized pS monogram -->
-  <text x="48" y="58" font-family="'Arial Black', Arial, sans-serif" font-size="44" font-weight="900" fill="#fff" text-anchor="middle" dominant-baseline="middle" letter-spacing="-2">pS</text>
+  <!-- pS monogram -->
+  <text x="48" y="58" font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-size="44" font-weight="900" fill="#fff" text-anchor="middle" dominant-baseline="middle" letter-spacing="-3" filter="url(#shadow)">pS</text>
+  <!-- inequality accent -->
+  <text x="78" y="28" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="rgba(255,255,255,0.5)" text-anchor="middle" dominant-baseline="middle">&gt;</text>
 </svg>

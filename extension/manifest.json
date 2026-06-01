@@ -5,8 +5,8 @@
   "description": "Automatically solves Futoshiki, Renzoku, Thermometer, and Battleships puzzles on puzzle-*.com",
   "homepage_url": "https://github.com/manucatni/puzzSLer",
   "icons": {
-    "48": "icons/icon.svg",
-    "96": "icons/icon.svg"
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
   },
   "permissions": ["storage"],
   "options_ui": {
