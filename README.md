@@ -8,7 +8,6 @@ Firefox extension that auto-solves puzzles on puzzle-*.com.
 |---|---|
 | puzzle-futoshiki.com | Futoshiki |
 | puzzle-futoshiki.com/renzoku | Renzoku |
-| puzzle-futoshiki.com/thermometers | Thermometers |
 | puzzle-thermometers.com | Thermometers |
 | puzzle-battleships.com | Battleships |
 

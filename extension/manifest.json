@@ -29,11 +29,6 @@
       "run_at": "document_start"
     },
     {
-      "matches": ["*://*.puzzle-futoshiki.com/thermometers/*"],
-      "js": ["inject_thermo.js"],
-      "run_at": "document_start"
-    },
-    {
       "matches": ["*://www.puzzle-thermometers.com/*"],
       "js": ["inject_thermo.js"],
       "run_at": "document_start"
