@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a6ea5"/>
+      <stop offset="100%" stop-color="#4f81bd"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="14" fill="url(#bg)"/>
+  <!-- subtle puzzle grid overlay -->
+  <g stroke="#fff" stroke-width="0.8" opacity="0.15">
+    <line x1="16" y1="32" x2="80" y2="32"/>
+    <line x1="16" y1="48" x2="80" y2="48"/>
+    <line x1="16" y1="64" x2="80" y2="64"/>
+    <line x1="32" y1="16" x2="32" y2="80"/>
+    <line x1="48" y1="16" x2="48" y2="80"/>
+    <line x1="64" y1="16" x2="64" y2="80"/>
+  </g>
+  <!-- stylized pS monogram -->
+  <text x="48" y="58" font-family="'Arial Black', Arial, sans-serif" font-size="44" font-weight="900" fill="#fff" text-anchor="middle" dominant-baseline="middle" letter-spacing="-2">pS</text>
+</svg>

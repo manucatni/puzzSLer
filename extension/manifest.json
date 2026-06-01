@@ -1,0 +1,52 @@
+{
+  "manifest_version": 2,
+  "name": "puzzSLVer — Puzzle Auto-Solver Pack",
+  "version": "1.0",
+  "description": "Automatically solves Futoshiki, Renzoku, Thermometer, and Battleships puzzles on puzzle-*.com",
+  "homepage_url": "https://github.com/manucatni/puzzSLer",
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+  "permissions": ["storage"],
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.puzzle-futoshiki.com/*", "*://puzzle-futoshiki.com/*"],
+      "exclude_matches": [
+        "*://*.puzzle-futoshiki.com/*renzoku*",
+        "*://*.puzzle-futoshiki.com/thermometers/*"
+      ],
+      "js": ["inject_futo.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.puzzle-futoshiki.com/*renzoku*"],
+      "js": ["inject_renzo.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.puzzle-futoshiki.com/thermometers/*"],
+      "js": ["inject_thermo.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://www.puzzle-thermometers.com/*"],
+      "js": ["inject_thermo.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://www.puzzle-battleships.com/*"],
+      "js": ["inject_battle.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "puzzslver@puzzle-solvers"
+    }
+  }
+}
